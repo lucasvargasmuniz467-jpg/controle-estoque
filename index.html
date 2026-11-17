@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Controle de Estoque</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. LOGIN (RF01) -->
+  <main id="tela-login" class="login">
+    <form id="form-login" class="cartao login-caixa">
+      <h1>Controle de Estoque</h1>
+      <p class="muted">Acesso do funcionário</p>
+      <label>Usuário <input id="login-usuario" autocomplete="username" required></label>
+      <label>Senha <input id="login-senha" type="password" autocomplete="current-password" required></label>
+      <p id="login-erro" class="erro" hidden>Usuário ou senha incorretos.</p>
+      <button class="btn">Entrar</button>
+      <p class="muted pequeno">Demonstração: usuário <b>admin</b>, senha <b>1234</b></p>
+    </form>
+  </main>
+
+  <!-- SISTEMA -->
+  <div id="app" hidden>
+    <header class="topo">
+      <strong>Controle de Estoque</strong>
+      <nav>
+        <button data-tela="dashboard" class="ativo">Dashboard</button>
+        <button data-tela="cadastro">Cadastrar produto</button>
+        <button data-tela="lista">Produtos</button>
+        <button data-tela="movimentacao">Movimentação</button>
+        <button id="btn-sair" class="sair">Sair</button>
+      </nav>
+    </header>
+
+    <div id="aviso" class="aviso" hidden></div>
+
+    <main class="conteudo">
+
+      <!-- 2. DASHBOARD -->
+      <section id="dashboard" class="tela">
+        <h2>Resumo</h2>
+        <div class="numeros">
+          <div class="cartao"><span id="n-produtos">0</span><small>produtos cadastrados</small></div>
+          <div class="cartao"><span id="n-unidades">0</span><small>unidades em estoque</small></div>
+          <div class="cartao alerta"><span id="n-baixo">0</span><small>com estoque baixo</small></div>
+        </div>
+        <h3>Itens com estoque baixo</h3>
+        <ul id="lista-baixo" class="lista-simples"></ul>
+      </section>
+
+      <!-- 3. CADASTRO (RF02 e RF04) -->
+      <section id="cadastro" class="tela" hidden>
+        <h2 id="titulo-cadastro">Cadastrar produto</h2>
+        <form id="form-produto" class="cartao form">
+          <input type="hidden" id="p-id">
+          <label>Nome <input id="p-nome" required></label>
+          <label>Categoria <input id="p-categoria" required placeholder="Ex.: Celulares"></label>
+          <label>Preço (R$) <input id="p-preco" type="number" min="0" step="0.01" required></label>
+          <label>Quantidade <input id="p-qtd" type="number" min="0" step="1" required></label>
+          <label>Estoque mínimo <input id="p-min" type="number" min="0" step="1" value="5" required></label>
+          <div class="acoes">
+            <button class="btn">Salvar produto</button>
+            <button type="button" id="btn-cancelar" class="btn sec" hidden>Cancelar edição</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 4. LISTA (RF03, RF04, RF05) -->
+      <section id="lista" class="tela" hidden>
+        <h2>Produtos</h2>
+        <input id="busca" class="busca" placeholder="Buscar por nome ou categoria">
+        <div class="rolagem">
+          <table>
+            <thead><tr><th>Nome</th><th>Categoria</th><th>Preço</th><th>Qtd.</th><th>Ações</th></tr></thead>
+            <tbody id="tabela"></tbody>
+          </table>
+        </div>
+        <p id="vazio" class="muted" hidden>Nenhum produto cadastrado. Use “Cadastrar produto” para começar.</p>
+      </section>
+
+      <!-- 5. MOVIMENTAÇÃO (RF06 e RF07) -->
+      <section id="movimentacao" class="tela" hidden>
+        <h2>Movimentação de estoque</h2>
+        <form id="form-mov" class="cartao form">
+          <label>Produto <select id="m-produto" required></select></label>
+          <label>Tipo
+            <select id="m-tipo">
+              <option value="entrada">Entrada (chegaram produtos)</option>
+              <option value="saida">Saída (produtos retirados)</option>
+            </select>
+          </label>
+          <label>Quantidade <input id="m-qtd" type="number" min="1" step="1" required></label>
+          <p id="m-erro" class="erro" hidden></p>
+          <button class="btn">Registrar</button>
+        </form>
+        <h3>Últimas movimentações</h3>
+        <ul id="historico" class="lista-simples"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
